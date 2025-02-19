@@ -1,0 +1,53 @@
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Movies Form</title>
+</head>
+<body>
+<div>
+    <form action="post">
+        <label  asp-for="Category">Category:</label>
+        <select asp-for="Category">
+            <option value="Action/Adventure">Action/Adventure</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Family">Family</option>
+            <option value="Horror/Suspense">Horror/Suspense</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+            <option value="Television">Television</option>
+            <option value="VHS">VHS</option>
+        </select>
+        <br><br>
+        <label asp-for="Title">Please enter the title</label>
+        <input asp-for="Title" type="text">
+        <br><br>
+        <label asp-for="Year">Please enter the Year:</label>
+        <input asp-for="Year" type="number">
+        <br><br>
+        <label asp-for="Title">Please enter the title</label>
+        <input asp-for="Title" id="director" type="text">
+        <br><br>
+        <label  asp-for="Rating">Rating:</label>
+        <select asp-for="Rating" name="rating">
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG-13">PG-13</option>
+            <option value="R">R</option>
+        </select>
+        <br><br>
+        <label  asp-for="Edited">Edited</label>
+        <select asp-for="Edited" name="yesNo">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+        <br><br>
+        <button type="submit">Submit the Movie</button>
+    </form>
+    
+
+</div>
+</body>
+</html>
