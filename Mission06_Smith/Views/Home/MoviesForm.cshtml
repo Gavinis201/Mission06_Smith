@@ -19,6 +19,9 @@
         <label asp-for="Year">Please enter the Year:</label>
         <input asp-for="Year" type="number">
         <br><br>
+        <label asp-for="Director">Director's Name</label>
+        <input asp-for="Director" type="text">
+        <br><br>
         <label  asp-for="Rating">Rating:</label>
         <select asp-for="Rating" name="rating">
             <option value="G">G</option>
@@ -34,10 +37,10 @@
         </select>
         <br><br>
         <label asp-for="LentTo">Lent to who?</label>
-        <input asp-for="LentTo" id="director" type="text">
+        <input asp-for="LentTo" type="text">
         <br><br>
         <label asp-for="Notes">Notes</label>
-        <input asp-for="Notes" id="director" type="text">
+        <input asp-for="Notes" type="text">
         <br><br>
         <button type="submit">Submit the Movie</button>
     </form>

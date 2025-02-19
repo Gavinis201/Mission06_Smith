@@ -34,11 +34,9 @@ namespace Mission06_Smith.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LentTo")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
