@@ -39,6 +39,7 @@ namespace Mission06_Smith.Migrations
 
                     b.Property<string>("Notes")
                         .IsRequired()
+                        .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Rating")
