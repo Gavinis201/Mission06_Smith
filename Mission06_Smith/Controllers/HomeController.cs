@@ -22,10 +22,16 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+    [HttpGet]
     public IActionResult MoviesForm()
     {
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult MoviesForm(Movies response)
+    {
+        return View("Confirmation", response);
     }
 
    

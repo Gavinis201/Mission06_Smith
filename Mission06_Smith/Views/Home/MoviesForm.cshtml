@@ -1,14 +1,6 @@
+@model Movies
 
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Movies Form</title>
-</head>
-<body>
-<div>
-    <form action="post">
+    <form method="post">
         <label  asp-for="Category">Category:</label>
         <select asp-for="Category">
             <option value="Action/Adventure">Action/Adventure</option>
@@ -40,14 +32,15 @@
         <br><br>
         <label  asp-for="Edited">Edited</label>
         <select asp-for="Edited" name="yesNo">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
         </select>
         <br><br>
+        <label asp-for="LentTo">Please enter the title</label>
+        <input asp-for="LentTo" id="director" type="text">
+        <br><br>
+        <label asp-for="Notes">Please enter the title</label>
+        <input asp-for="Notes" id="director" type="text">
         <button type="submit">Submit the Movie</button>
     </form>
     
-
-</div>
-</body>
-</html>
