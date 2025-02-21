@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Mission06_Smith.Models;
-
-public class MoviesFormContext : DbContext 
+namespace Mission06_Smith.Models
 {
-    
-    public MoviesFormContext(DbContextOptions<MoviesFormContext> options) : base(options) 
+    // MoviesFormContext is the database context for managing movie records.
+    public class MoviesFormContext : DbContext 
     {
+        // Constructor to initialize the context with options passed by dependency injection.
+        public MoviesFormContext(DbContextOptions<MoviesFormContext> options) : base(options) 
+        {
+        }
+        
+        // DbSet representing the Movies table in the database.
+        public DbSet<Movies> Movies { get; set; }
     }
-    
-    public DbSet<Movies> Movies { get; set; }
-    
 }

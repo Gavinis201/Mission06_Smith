@@ -2,41 +2,51 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Mission06_Smith.Models;
 
-namespace Mission06_Smith.Controllers;
-
-public class HomeController : Controller
+namespace Mission06_Smith.Controllers
 {
-    private MoviesFormContext _context;
-    
-
-    public HomeController(MoviesFormContext temp)
+    // HomeController is responsible for handling requests related to the home page and movie form.
+    public class HomeController : Controller
     {
-        _context = temp;
-    }
+        // MoviesFormContext is the database context used to interact with the Movies data.
+        private MoviesFormContext _context;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        // Constructor that initializes the MoviesFormContext.
+        // The 'temp' parameter is injected by dependency injection.
+        public HomeController(MoviesFormContext temp)
+        {
+            _context = temp;
+        }
 
-    public IActionResult Get2know()
-    {
-        return View();
-    }
-    [HttpGet]
-    public IActionResult MoviesForm()
-    {
-        return View();
-    }
+        // Index action returns the default home page view.
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-    [HttpPost]
-    public IActionResult MoviesForm(Movies response)
-    {
-        _context.Movies.Add(response);
-        _context.SaveChanges();
-        
-        return View("Confirmation", response);
-    }
+        // Get2know action returns a page that likely introduces the site or provides information about it.
+        public IActionResult Get2know()
+        {
+            return View();
+        }
 
-   
+        // MoviesForm GET method returns the movie input form to the user.
+        [HttpGet]
+        public IActionResult MoviesForm()
+        {
+            return View();
+        }
+
+        // MoviesForm POST method handles the form submission, saves the movie to the database, 
+        // and then shows a confirmation page with the submitted movie information.
+        [HttpPost]
+        public IActionResult MoviesForm(Movies response)
+        {
+            // Adds the submitted movie to the database and saves changes.
+            _context.Movies.Add(response);
+            _context.SaveChanges();
+
+            // Returns a confirmation view, passing the submitted movie data.
+            return View("Confirmation", response);
+        }
+    }
 }
