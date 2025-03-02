@@ -1,52 +1,118 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Mission06_Smith.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mission06_Smith.Controllers
 {
-    // HomeController is responsible for handling requests related to the home page and movie form.
     public class HomeController : Controller
     {
-        // MoviesFormContext is the database context used to interact with the Movies data.
         private MoviesFormContext _context;
 
-        // Constructor that initializes the MoviesFormContext.
-        // The 'temp' parameter is injected by dependency injection.
         public HomeController(MoviesFormContext temp)
         {
             _context = temp;
         }
 
-        // Index action returns the default home page view.
         public IActionResult Index()
         {
             return View();
         }
 
-        // Get2know action returns a page that likely introduces the site or provides information about it.
         public IActionResult Get2know()
         {
             return View();
         }
 
-        // MoviesForm GET method returns the movie input form to the user.
         [HttpGet]
         public IActionResult MoviesForm()
         {
-            return View();
+            ViewBag.Categories = _context.Categories.ToList();
+            return View(new Movies());
         }
 
-        // MoviesForm POST method handles the form submission, saves the movie to the database, 
-        // and then shows a confirmation page with the submitted movie information.
         [HttpPost]
         public IActionResult MoviesForm(Movies response)
         {
-            // Adds the submitted movie to the database and saves changes.
-            _context.Movies.Add(response);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Add(response);
+                _context.SaveChanges();
+                return View("Confirmation", response);
+            }
+            ViewBag.Categories = _context.Categories.ToList();
+            return View(response);
+        }
 
-            // Returns a confirmation view, passing the submitted movie data.
-            return View("Confirmation", response);
+        public IActionResult MoviesTable()
+        {
+            var movies = _context.Movies
+                .Include(m => m.Category)
+                .OrderBy(m => m.Title)
+                .ToList();
+            return View(movies);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var movieToEdit = _context.Movies
+                .Include(m => m.Category)
+                .Single(m => m.MovieId == id);
+            ViewBag.Categories = _context.Categories.ToList();
+            return View("MoviesForm", movieToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movies updatedMovie)
+        {
+            Console.WriteLine($"Edit POST - MovieId: {updatedMovie.MovieId}, Title: {updatedMovie.Title}");
+            if (ModelState.IsValid)
+            {
+                var existingMovie = _context.Movies.Find(updatedMovie.MovieId);
+                if (existingMovie != null)
+                {
+                    _context.Entry(existingMovie).CurrentValues.SetValues(updatedMovie);
+                    _context.SaveChanges();
+                    Console.WriteLine("Movie updated successfully.");
+                    return RedirectToAction("MoviesTable");
+                }
+                Console.WriteLine("Movie not found.");
+                return NotFound();
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                Console.WriteLine("Edit Validation Errors: " + string.Join(", ", errors));
+                ViewBag.Categories = _context.Categories.ToList();
+                return View("MoviesForm", updatedMovie);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var movieToDelete = _context.Movies
+                .Include(m => m.Category)
+                .SingleOrDefault(m => m.MovieId == id);
+            if (movieToDelete == null)
+            {
+                return NotFound();
+            }
+            return View(movieToDelete);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int MovieId)
+        {
+            var movieToDelete = _context.Movies
+                .SingleOrDefault(m => m.MovieId == MovieId);
+            if (movieToDelete != null)
+            {
+                _context.Movies.Remove(movieToDelete);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("MoviesTable");
         }
     }
 }
